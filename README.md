@@ -92,5 +92,4 @@ or:
 
 ## Build
 This project is tested and verified in ModelSim and on an Arrow DECA (MAX 10M50) FPGA development board with attached 8-bit host computer
-running Z80 CP/M.  A number of music files have been tested, including game soundtracks, with great results.  See the eevBlog forum for
-some .mp3 samples and more.
+running Z80 CP/M.  A number of music files have been tested, including game soundtracks, with great results.  See the [eevBlog forum](https://www.eevblog.com/forum/fpga/) for some .mp3 samples and more.
