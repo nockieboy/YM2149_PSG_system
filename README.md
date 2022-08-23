@@ -1,6 +1,9 @@
 # YM2149_PSG_system
 
-## Programmable Sound Generator based on [Jose Tejada's GitHub repository](https://github.com/jotego/jt49)
+An advanced YM2149 / AY-3-8910 Programmable Sound Generator.  Offers dual PSGs, programmable stereo mixer with bass and treble controls, standard
+I<sup>2</sup>S 44.1KHz or 48KHz 16-bit audio out, and built-in very accurate floating point system clock divider / generator.
+
+## A Programmable Sound Generator based on [Jose Tejada's GitHub repository](https://github.com/jotego/jt49)
 
 This SystemVerilog project was born from the 8-bit FPGA GPU project [here](https://www.eevblog.com/forum/fpga/), as a nice-to-have addition to
 the existing HDMI/DVI-compatible video display project designed to work with an 8-bit host computer (specifically, a unique DIY computer designed
@@ -31,7 +34,7 @@ You can also find us here : https://www.eevblog.com/forum/fpga/
 - Stereo sound with control registers for channel mixing volume and phase.
 - Registers for Treble and Bass adjustments.
 - Smart DC filtering allowing lower frequency output while managing peaks and switch on/off pops when necessary.
-- Improved precision 8 thru 14 bit exponential DAC support.  (10 bit almost exactly replicates the YM2149 normalized output voltage).
+- Improved precision 8 thru 10 bit exponential DAC support.  (10 bit almost exactly replicates the YM2149 normalized output voltage).
 - Precision floating point system clock divider offering parameter select-able PSG reference frequencies with accuracy down to the Hz.
 - Integrated standard I<sup>2</sup>S transmitter output with resampling & floating point system clock divider offering DAC Khz settings down to the Hz.
 - Functional simulation setup for Modelsim, with example YM2149 presets and full outputs with analog waveforms.
@@ -43,8 +46,8 @@ The project is instantiated in a top-level module as follows:
 ```
 YM2149_PSG_system #(
 
-   .CLK_IN_HZ       (      CMD_CLK_HZ ),   // Input system clock frequency
-   .CLK_I2S_IN_HZ   (   DDR3_CLK_HZ/2 ),   // Input I2S clock frequency
+   .CLK_IN_HZ       (        50000000 ),   // Input system clock frequency
+   .CLK_I2S_IN_HZ   (       200000000 ),   // Input I2S clock frequency
    .CLK_PSG_HZ      (         1000000 ),   // Desired PSG clock frequency (Hz)
    .I2S_DAC_HZ      (           48000 ),   // Desired I2S clock frequency (Hz)
    .YM2149_DAC_BITS (               9 ),   // PSG DAC bit precision, 8 through 12 bits, the higher the bits, the higher the dynamic range.
@@ -55,8 +58,8 @@ YM2149_PSG_system #(
 
 ) ARYA (
 
-   .clk             (      CMD_CLK ),
-   .clk_i2s         (  DDR3_CLK_50 ),
+   .clk             (      CLK_50m ),
+   .clk_i2s         (     CLK_200m ),
    .reset_n         (       ~reset ),
    .addr            (   r_psg_addr ), // register address
    .data            ( r_psg_data_i ), // data IN to PSG
