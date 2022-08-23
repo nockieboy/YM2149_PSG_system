@@ -91,4 +91,6 @@ or:
     be looked at by Jose Tejada, it is no longer in use because of the new 'BHG_jt49_filter_mixer.sv' replacement.
 
 ## Build
-This project is tested and verified in ModelSim and on an Arrow DECA (MAX 10M50) FPGA development board with attached 8-bit host computer.
+This project is tested and verified in ModelSim and on an Arrow DECA (MAX 10M50) FPGA development board with attached 8-bit host computer
+running Z80 CP/M.  A number of music files have been tested, including game soundtracks, with great results.  See the eevBlog forum for
+some .mp3 samples and more.
