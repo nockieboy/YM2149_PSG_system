@@ -39,6 +39,8 @@ You can also find us here : https://www.eevblog.com/forum/fpga/
 - Integrated standard I<sup>2</sup>S transmitter output with resampling & floating point system clock divider offering DAC Khz settings down to the Hz.
 - Functional simulation setup for Modelsim, with example YM2149 presets and full outputs with analog waveforms.
 - Simulation also includes a switch to run Jose Tejada's original jt49 project for direct comparison.
+- Included extensive Modelsim `setup_xxx.do` batch files and `YM2149_PSG_system_tb.sv`, which simulate multiple settings of the PSG and mixer with preset
+sounds to view the filter's effects and a DAC ramp visualization to compare to the `YM2149_dac_normalized_voltage.png`.
 
 
 ## Parameters & Ports
