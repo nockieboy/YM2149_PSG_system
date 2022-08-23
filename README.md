@@ -2,10 +2,10 @@
 
 ## Programmable Sound Generator based on [Jose Tejada's GitHub repository](https://github.com/jotego/jt49)
 
-This project was born from the 8-bit FPGA GPU project [here](https://www.eevblog.com/forum/fpga/), as a nice-to-have addition to the existing
-HDMI/DVI-compatible video display project designed to work with an 8-bit host computer (specifically, a unique DIY computer designed and built
-by nockieboy).  The project suffered some feature creep, including a full SD-card interface, so throwing a PSG in from the 1980's didn't seem
-like too much of a stretch!
+This SystemVerilog project was born from the 8-bit FPGA GPU project [here](https://www.eevblog.com/forum/fpga/), as a nice-to-have addition to
+the existing HDMI/DVI-compatible video display project designed to work with an 8-bit host computer (specifically, a unique DIY computer designed
+and built by nockieboy).  The project suffered some feature creep, including a full SD-card interface, so throwing a PSG in from the 1980's didn't
+seem like too much of a stretch!
 
 This project sprung from Jose Tejada's work and full credit goes to him for the original jt49 project.  Neither myself nor BrianHG make any
 claims to any of the original work, but we have enhanced and modified it as detailed below (and in great detail in the eevBlog forum mentioned
@@ -89,3 +89,6 @@ or:
 
     Also found clip-inversion overflow bug in jt49_mave.v & jt49_dcrm2.v, which the DC filter seems to sometimes patch. Though this may
     be looked at by Jose Tejada, it is no longer in use because of the new 'BHG_jt49_filter_mixer.sv' replacement.
+
+## Build
+This project is tested and verified in ModelSim and on an Arrow DECA (MAX 10M50) FPGA development board with attached 8-bit host computer.
