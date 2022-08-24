@@ -98,7 +98,7 @@ frequency.  This is the one case where you may use frequencies below 148.5MHz - 
 jitter, use 12.288MHz, or 2x or 4x that, etc..
 
 ## Build
-This project is tested and verified in ModelSim and on an Arrow DECA (MAX 10M50) FPGA development board with attached 8-bit host computer
+This project has been built in Quartus 20.1, tested and verified in ModelSim and on an Arrow DECA (MAX 10M50) FPGA development board with attached 8-bit host computer
 running Z80 CP/M.  A number of music files have been tested, including game soundtracks, with great results.
 
 See the [eevBlog forum](https://www.eevblog.com/forum/fpga/) for some .mp3 samples and more.
