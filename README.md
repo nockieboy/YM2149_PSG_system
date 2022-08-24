@@ -48,53 +48,57 @@ The project is instantiated in a top-level module as follows:
 ```
 YM2149_PSG_system #(
 
-   .CLK_IN_HZ       (        50000000 ),   // Input system clock frequency
-   .CLK_I2S_IN_HZ   (       200000000 ),   // Input I2S clock frequency
-   .CLK_PSG_HZ      (         1000000 ),   // Desired PSG clock frequency (Hz)
-   .I2S_DAC_HZ      (           48000 ),   // Desired I2S clock frequency (Hz)
-   .YM2149_DAC_BITS (               9 ),   // PSG DAC bit precision, 8 through 12 bits, the higher the bits, the higher the dynamic range.
-                                           // 10 bits almost perfectly replicates the YM2149 DA converter's Normalized voltage.
-                                           // With 8 bits, the lowest volumes settings will be slightly louder than normal.
-                                           // With 12 bits, the lowest volume settings will be too quiet.
-   .MIXER_DAC_BITS  (              16 )    // The number of DAC bits for the BHG_jt49_filter_mixer core and output.
+   .CLK_IN_HZ       (    50000000 ), // Input system clock frequency
+   .CLK_I2S_IN_HZ   (   200000000 ), // Input I2S clock frequency
+   .CLK_PSG_HZ      (     1000000 ), // Desired PSG clock frequency (Hz)
+   .I2S_DAC_HZ      (       48000 ), // Desired I2S clock frequency (Hz)
+   .YM2149_DAC_BITS (           9 ), // PSG DAC bit precision, 8 through 12 bits, the higher the bits, the higher the
+                                     // dynamic range.
+                                     // 10 bits almost perfectly replicates the YM2149 DA converter's Normalized voltage.
+                                     // With 8 bits, the lowest volumes settings will be slightly louder than normal.
+                                     // With 12 bits, the lowest volume settings will be too quiet.
+   .MIXER_DAC_BITS  (          16 )  // The number of DAC bits for the BHG_jt49_filter_mixer core and output.
 
 ) ARYA (
 
-   .clk             (      CLK_50m ),
-   .clk_i2s         (     CLK_200m ),
-   .reset_n         (       ~reset ),
-   .addr            (   r_psg_addr ), // register address
-   .data            ( r_psg_data_i ), // data IN to PSG
-   .wr_n            ( !r_psg_wr_en ), // data/addr valid
+   .clk             (     CLK_50m ), // Master clock for interfacing with the PSG.
+   .clk_i2s         (    CLK_200m ), // Reference clock for the I2S generator's output. Should be 148.5MHz or higher.
+   .reset_n         (     reset_n ), // Active-LOW reset.
+   .addr            (    psg_addr ), // PSG register address for data reads/writes.
+   .data            (  psg_data_i ), // 8-bit data IN to PSG for register writes.
+   .wr_n            ( psg_wr_en_n ), // Active-LOW write enable.
 
-   .dout            ( r_psg_data_o ), // PSG data output
-   .i2s_sclk        (      s0_bclk ), // I2S serial bit clock output
-   .i2s_lrclk       (      s0_wclk ), // I2S L/R output
-   .i2s_data        (      s0_data ), // I2S serial audio out
-   .sound           (              ), // parallel audio out, mono or left channel
-   .sound_right     (              )  // parallel audio out, right channel
+   .dout            (  psg_data_o ), // PSG data output for register reads.
+   .i2s_sclk        (     s0_bclk ), // I2S serial bit clock output.
+   .i2s_lrclk       (     s0_wclk ), // I2S L/R output.
+   .i2s_data        (     s0_data ), // I2S serial audio out.
+   .sound           (             ), // parallel audio out, mono or left channel.
+   .sound_right     (             )  // parallel audio out, right channel.
 
 );
 ```
 
 ## HDL project notes
-Only include one of the following:
+You can switch between the new and improved PSG system simulation and a simulation of the original version by Jose Tejada by 
+commenting-out the appropriate define on lines 48 or 49 in `YM2149_PSG_system_tb.sv`:
+```
+//`define use_legacy_jt49         // Simulate original jt49 hdl.
+`define use_YM2149_PSG_system   // Simulate new PSG_System.
+```                           
 
-`include "YM2149_PSG_system.sv"`  This will simulate the new BrianHG & Nockieboy YM2149_PSG_system.
+Remember, parameter YM2149_DAC_BITS must be set to 8 when using Jose Tejada's version!
 
-or:
+Patched files:
+- `jt49_dly.v` - found a few bugs in the original HDL, see lines: 29, 30, 31, & 39.
+- `jt49_mave.v` & `jt49_dcrm2.v` - found clip-inversion overflow bugs, which the DC filter seems to sometimes patch. Though this
+may be looked at by Jose Tejada, it is no longer in use here because of the new `BHG_jt49_filter_mixer.sv` replacement.
 
-`include "YM2149_PSG_jt49.sv"`    This will simulate the original jt49 YM2149 PSG source code
-                              from [Jose Tejada's GitHub repository](https://github.com/jotego/jt49).
-                              
-    Remember, parameter YM2149_DAC_BITS must be set to 8 when using Jose Tejada's version!
-
-    Patched files:
-    - 'jt49_dly.v', found a few bugs in the original HDL, see lines: 29, 30, 31, & 39.
-
-    Also found clip-inversion overflow bug in jt49_mave.v & jt49_dcrm2.v, which the DC filter seems to sometimes patch. Though this may
-    be looked at by Jose Tejada, it is no longer in use because of the new 'BHG_jt49_filter_mixer.sv' replacement.
+If you want zero jitter for the clk_i2s input, you should use a source PLL clock which is 256x, or higher, multiples of the source clock
+frequency.  This is the one case where you may use frequencies below 148.5MHz - e.g., if you want 48MHz I<sup>2</sup>S audio with no
+jitter, use 12.288MHz, or 2x or 4x that, etc..
 
 ## Build
 This project is tested and verified in ModelSim and on an Arrow DECA (MAX 10M50) FPGA development board with attached 8-bit host computer
-running Z80 CP/M.  A number of music files have been tested, including game soundtracks, with great results.  See the [eevBlog forum](https://www.eevblog.com/forum/fpga/) for some .mp3 samples and more.
+running Z80 CP/M.  A number of music files have been tested, including game soundtracks, with great results.
+
+See the [eevBlog forum](https://www.eevblog.com/forum/fpga/) for some .mp3 samples and more.
