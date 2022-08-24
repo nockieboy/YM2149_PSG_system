@@ -52,17 +52,20 @@ YM2149_PSG_system #(
    .CLK_I2S_IN_HZ   (   200000000 ), // Input I2S clock frequency
    .CLK_PSG_HZ      (     1000000 ), // Desired PSG clock frequency (Hz)
    .I2S_DAC_HZ      (       48000 ), // Desired I2S clock frequency (Hz)
-   .YM2149_DAC_BITS (           9 ), // PSG DAC bit precision, 8 through 12 bits, the higher the bits, the higher the
-                                     // dynamic range.
-                                     // 10 bits almost perfectly replicates the YM2149 DA converter's Normalized voltage.
-                                     // With 8 bits, the lowest volumes settings will be slightly louder than normal.
-                                     // With 12 bits, the lowest volume settings will be too quiet.
-   .MIXER_DAC_BITS  (          16 )  // The number of DAC bits for the BHG_jt49_filter_mixer core and output.
+   .YM2149_DAC_BITS (           9 ), // PSG DAC bit precision, 8 through 12 bits, the higher the bits, 
+                                     // the higher the dynamic range.
+                                     // 10 bits almost perfectly replicates the YM2149 DA converter's
+                                     // Normalized voltage. With 8 bits, the lowest volumes settings
+                                     // will be slightly louder than normal. With 12 bits, the lowest
+                                     // volume settings will be too quiet.
+   .MIXER_DAC_BITS  (          16 )  // The number of DAC bits for the BHG_jt49_filter_mixer core and
+                                     // output.
 
 ) ARYA (
 
    .clk             (     CLK_50m ), // Master clock for interfacing with the PSG.
-   .clk_i2s         (    CLK_200m ), // Reference clock for the I2S generator's output. Should be 148.5MHz or higher.
+   .clk_i2s         (    CLK_200m ), // Reference clock for the I2S generator's output. Should be 
+                                     // 148.5MHz or higher.
    .reset_n         (     reset_n ), // Active-LOW reset.
    .addr            (    psg_addr ), // PSG register address for data reads/writes.
    .data            (  psg_data_i ), // 8-bit data IN to PSG for register writes.
