@@ -86,7 +86,7 @@ module YM2149_PSG_system #(
     
     wire [7:0] rr_psg_a,rr_psg_b,rr_fmix_l,rr_fmix_r;
 
-    //  Select which read register to transmit back to the 'dout' port depending on the addr input.
+    // Select which read register to transmit back to the 'dout' port depending on the addr input.
         always_ff @(posedge clk)  dout <= (addr[7:4]==4'b1001) ? rr_fmix_r :
                                           (addr[7:4]==4'b1000) ? rr_fmix_l : 
                                           (addr[7:4]==4'b0001) ? rr_psg_b  :
